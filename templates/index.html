@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Futuristic Audio UI</title>
+    <!-- Links to your external cyberpunk stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -26,10 +27,11 @@
             <div class="wave-bar"></div>
         </div>
 
+        <!-- Song Metadata Labels updated by the browser -->
         <p class="song-title" id="song-title">Loading...</p>
         <p class="artist-name" id="artist-name">Loading...</p>
 
-        <!-- Progress Area -->
+        <!-- Progress Area Controlled by HTML5 Audio Events -->
         <div class="slider-container">
             <input type="range" id="progress" class="progress-slider" min="0" max="100" value="0">
             <div class="time-display">
@@ -38,14 +40,16 @@
             </div>
         </div>
 
-        <!-- Master Toggle Control Deck -->
+        <!-- Single Control Deck Button handled entirely in JS -->
         <div class="controls">
             <button id="btn-master" title="Play">▶</button>
         </div>
 
+        <!-- Status Badge -->
         <div class="status-badge" id="status">Stopped</div>
     </div>
 
+    <!-- Link to your browser audio controller script -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

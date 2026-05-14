@@ -4,12 +4,15 @@ const totalTimeText = document.getElementById('total-time');
 const waveBars = document.querySelectorAll('.wave-bar');
 const masterButton = document.getElementById('btn-master');
 
-let totalDurationSeconds = 0;
+// Hidden background HTML5 engine instantiation
+const audioEngine = new Audio();
+
 let isUserDragging = false; 
 let visualizerInterval = null;
-let currentButtonAction = "PLAY"; // Internal tracker state: "PLAY", "PAUSE", or "RESUME"
+let isMetadataLoaded = false;
 
 function formatTime(seconds) {
+    if (isNaN(seconds)) return "0:00";
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
@@ -33,89 +36,76 @@ function animateVisualizer(isRunning) {
     }, 120);
 }
 
-function updateStatusLoop() {
+// 1. Initial Metadata Load from Flask
+function initializePlayer() {
     fetch('/status')
         .then(response => response.json())
         .then(data => {
             document.getElementById('song-title').innerText = data.song_name;
             document.getElementById('artist-name').innerText = data.artist;
             
-            totalDurationSeconds = data.total_duration;
-            progressSlider.max = totalDurationSeconds; 
-            totalTimeText.innerText = formatTime(totalDurationSeconds);
-
-            if (!isUserDragging) {
-                progressSlider.value = data.current_position;
-                currentTimeText.innerText = formatTime(data.current_position);
-            }
-
-            // Route single button icons and behavior matching the Flask backend status
-            if (data.is_playing) {
-                document.getElementById('status').innerText = "Playing";
-                animateVisualizer(true);
-                masterButton.innerText = "‖"; // Render pause icon when track is active
-                masterButton.title = "Pause";
-                currentButtonAction = "PAUSE";
-            } else if (data.current_position > 0 && !data.is_playing) {
-                document.getElementById('status').innerText = "Paused";
-                animateVisualizer(false);
-                masterButton.innerText = "⚡"; // Render resume lightning bolt icon when paused
-                masterButton.title = "Resume";
-                currentButtonAction = "RESUME";
-            } else {
-                document.getElementById('status').innerText = "Stopped";
-                animateVisualizer(false);
-                masterButton.innerText = "▶"; // Render base triangle play icon when stopped/idle
-                masterButton.title = "Play";
-                currentButtonAction = "PLAY";
-            }
+            // Assign the Flask streaming URL source to the HTML5 audio engine
+            audioEngine.src = data.audio_route;
         })
-        .catch(err => console.error('Status sync error:', err));
+        .catch(err => console.error('Initialization error:', err));
 }
 
-updateStatusLoop();
-setInterval(updateStatusLoop, 1000);
+// 2. Track Local Browser Audio Events to Update UI Automatically
+audioEngine.addEventListener('loadedmetadata', () => {
+    totalDurationSeconds = audioEngine.duration;
+    progressSlider.max = Math.floor(totalDurationSeconds);
+    totalTimeText.innerText = formatTime(totalDurationSeconds);
+    isMetadataLoaded = true;
+});
 
-function sendCommand(route) {
-    fetch(route, { method: 'POST' })
-        .then(response => response.json())
-        .then(() => {
-            updateStatusLoop(); 
-        })
-        .catch(err => console.error('Command routing error:', err));
-}
-
-// Intercept clicks and switch target routes contextually
-masterButton.addEventListener('click', () => {
-    if (currentButtonAction === "PAUSE") {
-        sendCommand('/pause');
-    } else if (currentButtonAction === "RESUME") {
-        sendCommand('/resume');
-    } else {
-        sendCommand('/play');
+audioEngine.addEventListener('timeupdate', () => {
+    // Drive the slider roller forward as the audio plays in the browser
+    if (!isUserDragging && isMetadataLoaded) {
+        progressSlider.value = Math.floor(audioEngine.currentTime);
+        currentTimeText.innerText = formatTime(audioEngine.currentTime);
     }
 });
 
-// Slider Track Interceptors
+audioEngine.addEventListener('ended', () => {
+    document.getElementById('status').innerText = "Stopped";
+    animateVisualizer(false);
+    masterButton.innerText = "▶";
+    masterButton.title = "Play";
+    progressSlider.value = 0;
+    currentTimeText.innerText = "0:00";
+});
+
+// 3. Handle Click Toggle Interactions locally (Zero Server Latency)
+masterButton.addEventListener('click', () => {
+    if (audioEngine.paused) {
+        audioEngine.play()
+            .then(() => {
+                document.getElementById('status').innerText = "Playing";
+                animateVisualizer(true);
+                masterButton.innerText = "‖"; 
+                masterButton.title = "Pause";
+            })
+            .catch(err => console.error("Playback failed:", err));
+    } else {
+        audioEngine.pause();
+        document.getElementById('status').innerText = "Paused";
+        animateVisualizer(false);
+        masterButton.innerText = "⚡"; 
+        masterButton.title = "Resume";
+    }
+});
+
+// 4. Handle Slider Scrubbing (Jumping forward/backward instantly)
 progressSlider.addEventListener('input', (e) => {
     isUserDragging = true;
     currentTimeText.innerText = formatTime(e.target.value);
 });
 
 progressSlider.addEventListener('change', (e) => {
-    const targetSeconds = parseInt(e.target.value);
-    
-    fetch('/seek', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ position: targetSeconds })
-    })
-    .then(res => res.json())
-    .then(() => {
-        isUserDragging = false;
-    })
-    .catch(err => {
-        console.error(err);
-        isUserDragging = false;
-    });
+    // Instantly seek within the browser audio buffer element
+    audioEngine.currentTime = parseInt(e.target.value);
+    isUserDragging = false;
 });
+
+// Trigger setup on structural load
+initializePlayer();
