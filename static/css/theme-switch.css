@@ -1,0 +1,117 @@
+/* ==========================================================================
+   SCALABLE CELESTIAL DAY / NIGHT THEME SWITCH DESIGNS
+   ========================================================================== */
+.theme-switch-wrapper {
+    position: relative;
+    user-select: none;
+    /* --- MASTER CORES SCALE HANDLE --- */
+    /* Adjust this single property to change the switch size scale globally! */
+    font-size: clamp(0.55rem, 1.2vw, 0.7rem); 
+}
+
+.theme-checkbox {
+    display: none; /* Hide native element completely */
+}
+
+.theme-toggle-label {
+    position: relative;
+    display: block;
+    width: 6.2em;  /* Proportional scaling dimensions */
+    height: 3.1em;
+    background: #7dd3fc; /* Daytime light blue sky */
+    border-radius: 4em;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: inset 0 0.3em 0.7em rgba(0,0,0,0.15), 0 0.3em 0.7em rgba(0,0,0,0.05);
+    transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Sun/Moon Moving Toggle Knob Core */
+.celestial-body {
+    position: absolute;
+    top: 0.3em;
+    left: 0.3em;
+    width: 2.5em;
+    height: 2.5em;
+    background: #fbbf24; /* Orange-yellow sun */
+    border-radius: 50%;
+    box-shadow: 0 0.3em 0.8em rgba(251, 191, 36, 0.4);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 5;
+}
+
+/* Lunar Crater Structures */
+.crater {
+    position: absolute;
+    background: #94a3b8;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.crater-1 { top: 0.5em; left: 0.5em; width: 0.7em; height: 0.7em; }
+.crater-2 { top: 1.4em; left: 1.3em; width: 0.4em; height: 0.4em; }
+
+/* Daytime Fluffy Morning Clouds Layout */
+.cloud {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 4em;
+    transition: all 0.4s ease;
+    z-index: 3;
+}
+.cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+}
+.cloud-1 { bottom: -0.4em; right: 0.7em; width: 2.4em; height: 1.1em; }
+.cloud-1::before { top: -0.7em; left: 0.4em; width: 1.1em; height: 1.1em; }
+.cloud-1::after { top: -1.0em; right: 0.3em; width: 1.4em; height: 1.4em; }
+
+.cloud-2 {
+    bottom: 0.1em; right: 2.5em; width: 1.8em; height: 0.8em;
+    opacity: 0.7; transform: scale(0.8);
+}
+.cloud-2::before { top: -0.6em; left: 0.3em; width: 0.8em; height: 0.8em; }
+.cloud-2::after { top: -0.7em; right: 0.3em; width: 1.0em; height: 1.0em; }
+
+/* Night Background Star Matrix Layout */
+.stars {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        radial-gradient(circle, #fff 10%, transparent 11%),
+        radial-gradient(circle, #fff 15%, transparent 16%);
+    background-size: 1.4em 1.4em, 2.1em 2.1em;
+    background-position: 0 0, 1.0em 1.0em;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 2;
+}
+
+/* ==========================================================================
+   INTERACTIVE TRIGGER STATES (Using fluid mathematical em transitions)
+   ========================================================================== */
+.theme-checkbox:checked + .theme-toggle-label {
+    background: #1e1b4b; /* Night space deep purple-blue */
+}
+
+.theme-checkbox:checked + .theme-toggle-label .celestial-body {
+    left: calc(100% - 2.8em); /* Smoothly glides over based on dynamic width definitions */
+    background: #cbd5e1; /* Matte gray-silver moon */
+    box-shadow: 0 0.3em 0.8em rgba(255, 255, 255, 0.2);
+}
+
+.theme-checkbox:checked + .theme-toggle-label .crater {
+    opacity: 1; /* Unveil moon craters */
+}
+
+.theme-checkbox:checked + .theme-toggle-label .cloud {
+    transform: translateY(2.8em) scale(0.5);
+    opacity: 0; /* Drop clouds out of framework view */
+}
+
+.theme-checkbox:checked + .theme-toggle-label .stars {
+    opacity: 0.25; /* Reveal background stars */
+}

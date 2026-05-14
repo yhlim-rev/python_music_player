@@ -3,53 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futuristic Audio UI</title>
-    <!-- Links to your external cyberpunk stylesheet -->
+    <title>Cyberpunk Streaming Studio</title>
+    
+    <!-- Decoupled Modular CSS Style Sheets -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme-switch.css') }}">
+    
+    <!-- Production jsDelivr CDN Link for Lucide Vector Icons -->
+    <script src="jsdelivr.net"></script>
 </head>
 <body>
 
-    <div class="player-card">
+    <div class="dashboard-container">
         
-        <!-- Cyber Sound Wave Equalizer Bars -->
-        <div class="visualizer-container" id="visualizer">
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-        </div>
+        <!-- TOP SECTION: Search Utility & Celestial Switch -->
+        <header class="dash-header">
+            {% include 'components/search.html' %}
+        </header>
 
-        <!-- Song Metadata Labels updated by the browser -->
-        <p class="song-title" id="song-title">Loading...</p>
-        <p class="artist-name" id="artist-name">Loading...</p>
+        <!-- MAIN RESPONSIVE GRID -->
+        <main class="dash-grid">
+            
+            <!-- Column 1: Audio Visualizer Card -->
+            <section class="grid-card player-section">
+                {% include 'components/visualizer.html' %}
+            </section>
 
-        <!-- Progress Area Controlled by HTML5 Audio Events -->
-        <div class="slider-container">
-            <input type="range" id="progress" class="progress-slider" min="0" max="100" value="0">
-            <div class="time-display">
-                <span id="current-time">0:00</span>
-                <span id="total-time">0:00</span>
-            </div>
-        </div>
+            <!-- Column 2: Interactive Lyrics Sync Panel -->
+            <section class="grid-card lyrics-section">
+                {% include 'components/lyrics.html' %}
+            </section>
 
-        <!-- Single Control Deck Button handled entirely in JS -->
-        <div class="controls">
-            <button id="btn-master" title="Play">▶</button>
-        </div>
+            <!-- Column 3: Playlist and Artist Context Profiles -->
+            <section class="sidebar-section">
+                <div class="grid-card playlist-card">
+                    {% include 'components/playlist.html' %}
+                </div>
+                <div class="grid-card artist-card">
+                    {% include 'components/artist.html' %}
+                </div>
+            </section>
 
-        <!-- Status Badge -->
-        <div class="status-badge" id="status">Stopped</div>
+        </main>
     </div>
 
-    <!-- Link to your browser audio controller script -->
+    <!-- Decoupled Modular JavaScript Controllers -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
