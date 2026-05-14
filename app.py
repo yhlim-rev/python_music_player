@@ -1,11 +1,19 @@
 from flask import Flask, render_template, jsonify, request
 import pygame
 import time
+import os
 
 app = Flask(__name__)
 
+if os.environ.get("VERCEL"):
+    os.environ["SDL_AUDIODRIVER"] = "dummy"
+    os.environ["SDL_VIDEODRIVER"] = "dummy"
+
 # Initialize Pygame Mixer
-pygame.mixer.init()
+try:
+    pygame.mixer.init()
+except pygame.error as e:
+    print(f"Audio device not available, skipping mixer initialization: {e}")
 
 # Configure your song path and tracking data
 SONG_FILE = "harehareya.mp3"
