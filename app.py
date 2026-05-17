@@ -10,6 +10,9 @@ load_dotenv()
 
 app = Flask(__name__)
 
+# set permission to .cache
+os.chmod('.cache', 0o700)
+
 # Initialize safe backend-to-backend Spotify API client manager
 auth_manager = SpotifyClientCredentials(
     client_id=os.environ.get('SPOTIPY_CLIENT_ID'),
@@ -19,7 +22,7 @@ sp = spotipy.Spotify(auth_manager=auth_manager)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MUSIC_DIR = os.path.join(os.path.dirname(__file__), 'music')
-os.chmod('.cache', 0o700)
+
 
 @app.route('/')
 def index():
