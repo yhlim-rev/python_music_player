@@ -18,7 +18,7 @@ auth_manager = SpotifyClientCredentials(
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MUSIC_DIR = os.path.join(BASE_DIR, 'music')
+MUSIC_DIR = "/tmp/music"
 
 # Guarantee the local music library folder exists
 if not os.path.exists(MUSIC_DIR):
