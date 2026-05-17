@@ -4,6 +4,7 @@ from flask import Flask, render_template, jsonify, request, send_from_directory
 from dotenv import load_dotenv
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy.cache_handler import MemoryCacheHandler
 
 # Ingress environment variables safely
 load_dotenv()
@@ -11,12 +12,12 @@ load_dotenv()
 app = Flask(__name__)
 
 # set permission to .cache
-os.chmod('.cache', 0o700)
 
 # Initialize safe backend-to-backend Spotify API client manager
 auth_manager = SpotifyClientCredentials(
     client_id=os.environ.get('SPOTIPY_CLIENT_ID'),
-    client_secret=os.environ.get('SPOTIPY_CLIENT_SECRET')
+    client_secret=os.environ.get('SPOTIPY_CLIENT_SECRET'),
+    cache_handler=MemoryCacheHandler() 
 )
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
