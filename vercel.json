@@ -1,5 +1,12 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "app.py",
+      "use": "@vercel/python",
+      "config": { "includeFiles": "harehareya.mp3" }
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
