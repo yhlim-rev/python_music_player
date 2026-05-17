@@ -1,14 +1,16 @@
 {
   "version": 2,
-  "functions": {
-    "api/app.py": {
-      "includeFiles": "harehareya.mp3"
-    }
-  },
-  "rewrites": [
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/api/app.py"
+      "src": "app.py",
+      "use": "@vercel/python",
+      "config": { "includeFiles": "harehareya.mp3" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app.py"
     }
   ]
 }
