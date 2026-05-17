@@ -1,0 +1,6 @@
+.lyrics-wrapper { height: 310px; overflow-y: auto; padding-right: 8px; }
+.lyric-line {
+    color: var(--text-muted); font-size: 1.05rem; line-height: 1.8;
+    margin: 14px 0; transition: all 0.3s ease; opacity: 0.5;
+}
+.lyric-line.active { color: var(--accent-glow); opacity: 1; font-weight: 600; transform: scale(1.02); }

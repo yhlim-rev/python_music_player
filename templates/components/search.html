@@ -1,22 +1,24 @@
 <div class="header-utilities">
-    <!-- Search Query Bar -->
-    <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" placeholder="Search tracks, artists, or genres...">
+    <!-- Search Input Wrapper Block -->
+    <div class="search-container-block">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <!-- Input captures the Enter key down trigger natively -->
+            <input type="text" id="search-input" placeholder="Type track name and press Enter...">
+        </div>
+        
+        <!-- Crucial: This absolute overlay remains hidden until results return -->
+        <div id="search-results-dropdown" class="search-dropdown hidden"></div>
     </div>
 
-    <!-- Animated Celestial Sky Switch Container -->
+    <!-- Animated Celestial Sky Switch Container (Day/Night Theme Toggle) -->
     <div class="theme-switch-wrapper">
         <input type="checkbox" id="theme-toggle" class="theme-checkbox">
         <label for="theme-toggle" class="theme-toggle-label">
             <div class="sky-background"></div>
             <div class="stars"></div>
-            
-            <!-- Floating Morning Clouds -->
             <div class="cloud cloud-1"></div>
             <div class="cloud cloud-2"></div>
-            
-            <!-- Turning Toggle Knob Core -->
             <div class="celestial-body">
                 <div class="crater crater-1"></div>
                 <div class="crater crater-2"></div>

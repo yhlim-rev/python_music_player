@@ -5,36 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyberpunk Streaming Studio</title>
     
-    <!-- Decoupled Modular CSS Style Sheets -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Base styles, frameworks, and component styling fragments -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme-switch.css') }}">
-    
-    <!-- Production jsDelivr CDN Link for Lucide Vector Icons -->
-    <script src="jsdelivr.net"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/search.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/visualizer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/lyrics.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/playlist.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/artist.css') }}">
 </head>
 <body>
 
     <div class="dashboard-container">
-        
-        <!-- TOP SECTION: Search Utility & Celestial Switch -->
         <header class="dash-header">
             {% include 'components/search.html' %}
         </header>
 
-        <!-- MAIN RESPONSIVE GRID -->
         <main class="dash-grid">
-            
-            <!-- Column 1: Audio Visualizer Card -->
             <section class="grid-card player-section">
                 {% include 'components/visualizer.html' %}
             </section>
 
-            <!-- Column 2: Interactive Lyrics Sync Panel -->
             <section class="grid-card lyrics-section">
                 {% include 'components/lyrics.html' %}
             </section>
 
-            <!-- Column 3: Playlist and Artist Context Profiles -->
             <section class="sidebar-section">
                 <div class="grid-card playlist-card">
                     {% include 'components/playlist.html' %}
@@ -43,12 +38,18 @@
                     {% include 'components/artist.html' %}
                 </div>
             </section>
-
         </main>
     </div>
 
-    <!-- Decoupled Modular JavaScript Controllers -->
+    <!-- Core engines initialized first -->
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/player-core.js') }}"></script>
+    
+    <!-- Decoupled script handlers tracking component-specific bindings -->
+    <script src="{{ url_for('static', filename='js/components/search.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/visualizer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/lyrics.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/playlist.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/artist.js') }}"></script>
 </body>
 </html>

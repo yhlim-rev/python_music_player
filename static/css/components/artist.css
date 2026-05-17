@@ -1,0 +1,5 @@
+.artist-header-row { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.artist-avatar { width: 44px; height: 44px; background: var(--accent-secondary); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; color: white; }
+.artist-profile-name { margin: 0; font-size: 1rem; }
+.artist-followers { margin: 2px 0 0 0; font-size: 0.75rem; color: var(--text-muted); }
+.artist-bio { font-size: 0.85rem; line-height: 1.5; color: var(--text-main); text-align: left; margin: 0; opacity: 0.8; }

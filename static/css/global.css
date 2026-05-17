@@ -1,0 +1,102 @@
+:root {
+    --bg-color: #f3f4f6;            
+    --card-blur: 20px;
+    --card-bg: rgba(255, 255, 255, 0.75); 
+    --accent-glow: #16a34a;        
+    --accent-secondary: #9333ea;   
+    --text-main: #1f2937;          
+    --text-muted: #6b7280;         
+    --border-color: rgba(147, 51, 234, 0.1);
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(168, 85, 247, 0.12) 0px, transparent 40%),
+        radial-gradient(at 100% 100%, rgba(34, 197, 94, 0.08) 0px, transparent 40%);
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 100vh;
+    transition: background-color 0.4s ease;
+    --button-shadow: rgba(22, 163, 74, 0.2);
+}
+
+body.dark-mode {
+    --bg-color: #110d24;
+    --card-bg: rgba(30, 20, 50, 0.7);
+    --accent-glow: #22c55e;
+    --accent-secondary: #a855f7;   
+    --text-main: #f9fafb;
+    --text-muted: #d8b4fe;
+    --border-color: rgba(168, 85, 247, 0.25);
+}
+
+body:not(.dark-mode) .master-glow-btn {
+    background: var(--accent-secondary); /* Royal Purple button base */
+    color: #ffffff;                       /* White vector graphic icon */
+    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.25);
+}
+
+body:not(.dark-mode) .master-glow-btn:hover {
+    background: var(--accent-glow);       /* Transitions to morning green on hover */
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.4);
+}
+
+body.dark-mode .master-glow-btn {
+    background: #ffffff;                  /* Solid white button base */
+    color: #110d24;                       /* Midnight Indigo icon */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+}
+body.dark-mode .master-glow-btn:hover {
+    background: var(--accent-glow);       /* Transitions to neon green on hover */
+    color: #110d24;
+    box-shadow: 0 0 25px rgba(34, 197, 94, 0.6);
+}
+
+/* Master Dashboard Grid Containers */
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dash-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.grid-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--card-blur));
+    -webkit-backdrop-filter: blur(var(--card-blur));
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.sidebar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-title {
+    font-size: 1.1rem;
+    margin: 0 0 16px 0;
+    color: var(--text-main);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+@media (max-width: 900px) { .dash-grid { grid-template-columns: 1fr 1fr; } .sidebar-section { grid-column: span 2; flex-direction: row; } }
+@media (max-width: 600px) { .dash-grid { grid-template-columns: 1fr; } .sidebar-section { grid-column: span 1; flex-direction: column; } .lyrics-section { order: 2; } }

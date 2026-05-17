@@ -1,0 +1,80 @@
+.visualizer-container {
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	gap: 5px;
+	height: 90px;
+	margin: 20px 0 30px 0;
+}
+
+ .wave-bar {
+	flex: 1;
+	height: 15%;
+	background: linear-gradient(to top, var(--accent-secondary), var(--accent-glow));
+	border-radius: 4px;
+	transition: height 0.12s ease-in-out;
+}
+
+.slider-container {
+	margin-bottom: 20px;
+}
+
+.progress-slider {
+    width: 100%;
+    accent-color: var(--accent-glow);
+    cursor: pointer;
+    background: rgba(255,255,255,0.08);
+    height: 5px;
+    border-radius: 4px;
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 8px;
+}
+
+
+.controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.master-glow-btn {
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    
+    /* Crucial layout properties to prevent sub-pixel shifting */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Isolate scaling to only use GPU composite layers */
+    transform: scale(1) translateZ(0);
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                background-color 0.2s ease, 
+                box-shadow 0.2s ease;
+}
+
+.master-glow-btn:hover {
+    /* Kept exactly at 1 to remove micro-jitter, or 1.02 maximum if needed */
+    transform: scale(1.02) translateZ(0); 
+}
+
+.master-glow-btn svg {
+    width: 18px;
+    height: 18px;
+    display: block; /* Stops inline font baseline shifts */
+    flex-shrink: 0; /* Forces the browser not to squash the vector geometry */
+    margin: 0;
+    padding: 0;
+}
