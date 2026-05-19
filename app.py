@@ -133,7 +133,7 @@ def handle_spotdl_download():
             os.makedirs(temp_dir)
 
         command = [
-            "py -m spotdl", 
+            "py", "-m", "spotdl", 
             str(spotify_url),
             "--output", temp_dir,
             "--format", "mp3",
