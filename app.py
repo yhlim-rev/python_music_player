@@ -1,6 +1,5 @@
 import os
 import io
-import sys
 import shutil
 import subprocess
 import boto3
@@ -43,8 +42,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IS_VERCEL = os.environ.get('VERCEL') == '1'
 if IS_VERCEL:
     MUSIC_DIR = '/tmp'
+    EXECUTABLE = '/var/lang/bin/python'
 else:
     MUSIC_DIR = os.path.join(BASE_DIR, 'music')
+    EXECUTABLE = 'py'
 
 
 def generate_r2_url(filename):
@@ -128,14 +129,14 @@ def handle_spotdl_download():
         pass
 
     temp_dir = os.path.join(MUSIC_DIR, f"temp_{track_id}")
-    print("TMP dir here:", temp_dir)
+
     try:
         print(f"SpotDL Pipeline: Fetching track from URL: {spotify_url}")
         if not os.path.exists(temp_dir):
             os.makedirs(temp_dir)
 
         command = [
-            sys.executable, "-m", "spotdl", 
+            EXECUTABLE, "-m", "spotdl", 
             str(spotify_url),
             "--output", temp_dir,
             "--format", "mp3",
