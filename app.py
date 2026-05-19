@@ -127,6 +127,7 @@ def handle_spotdl_download():
         pass
 
     temp_dir = os.path.join(MUSIC_DIR, f"temp_{track_id}")
+    print("TMP dir here:", temp_dir)
     try:
         print(f"SpotDL Pipeline: Fetching track from URL: {spotify_url}")
         if not os.path.exists(temp_dir):
