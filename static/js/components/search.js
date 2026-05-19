@@ -35,14 +35,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         `;
 
                         row.addEventListener('click', () => {
-                            // Show a temporary loading status on the badge while spotdl is running
                             const statusBadge = document.getElementById('status');
                             if (statusBadge) statusBadge.innerText = "Downloading...";
                             
                             searchDropdown.classList.add('hidden');
                             searchInput.value = '';
 
-                            // Post tracking credentials up to the spotdl wrapper endpoint
                             fetch('/api/download', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
@@ -58,7 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
                                     if (statusBadge) statusBadge.innerText = "Error";
                                     return;
                                 }
-                                // Pass full downloaded track directly into your shared browser player engine core
+
+                                if (statusBadge) statusBadge.innerText = "Playing from Cloudflare";
+
+                                // FIX 1: Pass the full pre-signed R2 URL directly. 
+                                // HTML5 Audio elements natively stream remote HTTPS URLs perfectly.
                                 window.CyberPlayer.loadTrack(track.name, track.artist, data.audio_route, track.album_art);
                             })
                             .catch(err => {
