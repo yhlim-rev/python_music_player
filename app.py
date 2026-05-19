@@ -37,8 +37,13 @@ r2_client = boto3.client(
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# Kept strictly for quick local scratchpad processing during runtime download
-MUSIC_DIR = os.path.join(os.path.dirname(__file__), 'tmp')
+
+# DYNAMIC LOCATION: Uses the root /tmp directory when hosted on Vercel
+IS_VERCEL = os.environ.get('VERCEL') == '1'
+if IS_VERCEL:
+    MUSIC_DIR = '/tmp'
+else:
+    MUSIC_DIR = os.path.join(BASE_DIR, 'tmp')
 
 
 def generate_r2_url(filename):
@@ -165,7 +170,7 @@ def handle_spotdl_download():
         return jsonify({'audio_route': presigned_url})
         
     except Exception as e:
-        print(f"SpotDL Exception Pipeline Failure: {e}")
+        print(f"SpotDL Pipeline Failure: {e}")
         return jsonify({'error': 'Streaming download failed'}), 500
     finally:
         # Clean up local system storage immediately
@@ -180,7 +185,7 @@ def stream_audio(filename):
 
 
 if __name__ == '__main__':
-    # Make sure local music folder scratchpad directory is present on runtime initialization
-    if not os.path.exists(MUSIC_DIR):
+    # Only try creating paths locally; Vercel handles its own /tmp systems.
+    if not IS_VERCEL and not os.path.exists(MUSIC_DIR):
         os.makedirs(MUSIC_DIR)
     app.run(debug=True, port=5000)
