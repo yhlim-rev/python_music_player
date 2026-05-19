@@ -42,10 +42,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IS_VERCEL = os.environ.get('VERCEL') == '1'
 if IS_VERCEL:
     MUSIC_DIR = '/tmp'
-    EXECUTABLE = '/var/lang/bin/python'
 else:
     MUSIC_DIR = os.path.join(BASE_DIR, 'music')
-    EXECUTABLE = 'py'
 
 
 def generate_r2_url(filename):
@@ -136,7 +134,7 @@ def handle_spotdl_download():
             os.makedirs(temp_dir)
 
         command = [
-            EXECUTABLE, "-m", "spotdl", 
+            "python", "-m", "spotdl", 
             str(spotify_url),
             "--output", temp_dir,
             "--format", "mp3",
