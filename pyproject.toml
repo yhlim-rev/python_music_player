@@ -6,6 +6,6 @@ dependencies = [
     "flask>=3.0.3",
     "python-dotenv",
     "spotdl",
-    "spotipy,
+    "spotipy",
     "boto3"
 ]
