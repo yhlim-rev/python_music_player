@@ -1,6 +1,6 @@
 import os
 import io
-# import shutil
+import shutil
 import subprocess
 import boto3
 from botocore.config import Config
@@ -38,7 +38,7 @@ r2_client = boto3.client(
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Kept strictly for quick local scratchpad processing during runtime download
-MUSIC_DIR = os.path.join(os.path.dirname(__file__), 'music')
+MUSIC_DIR = os.path.join(os.path.dirname(__file__), 'tmp')
 
 
 def generate_r2_url(filename):
@@ -167,10 +167,10 @@ def handle_spotdl_download():
     except Exception as e:
         print(f"SpotDL Exception Pipeline Failure: {e}")
         return jsonify({'error': 'Streaming download failed'}), 500
-    # finally:
-    #     # Clean up local system storage immediately
-    #     if os.path.exists(temp_dir):
-    #         shutil.rmtree(temp_dir)
+    finally:
+        # Clean up local system storage immediately
+        if os.path.exists(temp_dir):
+            shutil.rmtree(temp_dir)
 
 
 @app.route('/stream/<filename>')
