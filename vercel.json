@@ -3,8 +3,7 @@
   "builds": [
     {
       "src": "app.py",
-      "use": "@vercel/python",
-      "config": { "includeFiles": "music/harehareya.mp3" }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
