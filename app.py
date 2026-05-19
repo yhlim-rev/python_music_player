@@ -1,6 +1,5 @@
 import os
 import io
-import sys
 import shutil
 import subprocess
 import boto3
@@ -134,7 +133,7 @@ def handle_spotdl_download():
             os.makedirs(temp_dir)
 
         command = [
-            sys.executable, "-m", "spotdl", 
+            "python", "-m", "spotdl", 
             str(spotify_url),
             "--output", temp_dir,
             "--format", "mp3",
